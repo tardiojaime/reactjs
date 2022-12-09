@@ -11,3 +11,34 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+html,
+body, 
+#root,
+.app,
+.content {
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+
+}
+.app{
+  display: flex;
+  position: relative;
+}
+/* barra de desplazamiento */
+::-webkit-scrollbar{
+  width: 100%;
+}
+/* track */
+::-webkit-scrollbar-track{
+  background: #e0e0e0;
+}
+/* handle */
+::-webkit-scrollbar-thumb{
+  background:#888;
+}
+/* handle on hover */
+::-webkit-scrollbar-track:hover{
+  background: #555;
+}
