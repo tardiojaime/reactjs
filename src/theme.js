@@ -124,7 +124,7 @@ export const themesettings = (mode) => {
       mode: mode,
       ...(mode === 'dark' 
       ? {
-        primary: {
+/*         primary: {
           main: colors.primary[500],
         }, 
         secondary: {
@@ -134,12 +134,12 @@ export const themesettings = (mode) => {
           dark: colors.grey[700],
           main: colors.grey[500],
           light: colors.grey[100],
-        },
+        }, */
         background: {
           default: colors.primary[500],
         }
       }: {
-        primary: {
+/*         primary: {
           main: colors.primary[100],
         }, 
         secondary: {
@@ -149,7 +149,7 @@ export const themesettings = (mode) => {
           dark: colors.grey[700],
           main: colors.grey[500],
           light: colors.grey[100],
-        },
+        }, */
         background: {
           default: '#fcfcfc',
         },
@@ -160,21 +160,9 @@ export const themesettings = (mode) => {
       h1:{
         fontSize: 40,
       },
-      h2:{
-        fontSize: 32,
-      },
-      h3:{
+      h2: {
         fontSize: 24,
-      },
-      h4:{
-        fontSize: 20,
-      },
-      h5:{
-        fontSize: 16,
-      },
-      h6:{
-        fontSize: 14,
-      },
+      }
     },
   };
 };
@@ -186,7 +174,7 @@ export const ColorModeContext = createContext({
 // establecemos un mode de ajuste
 
 export const useMode = () => {
-  const [mode, setMode] = useState('dark');
+  const [mode, setMode] = useState('light');
   const colorMode = useMemo(
     ()=>({
       toggleColorMode: () =>
