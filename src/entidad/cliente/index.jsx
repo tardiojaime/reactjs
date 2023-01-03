@@ -7,12 +7,15 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Header from "../../components/Header";
 import { useEffect } from "react";
-import { obtener } from "../../axios";
+import Axios from '../../server/axios';
+const sql = new Axios();
+const url = process.env.REACT_APP_CLIENTE;
+
 const Cliente = () => {
   const [cliente, setcliente] = useState([]);
   useEffect(() => {
     const cargar = async () =>{ 
-      const datos = await obtener('http://127.0.0.1:4000/cliente/query');
+      const datos = await sql.All(url);
       setcliente(datos.data);
     }
     cargar();

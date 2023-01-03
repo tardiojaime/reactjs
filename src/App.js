@@ -2,15 +2,14 @@ import { useState } from "react";
 import { ColorModeContext, useMode} from './theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Routes, Route } from 'react-router-dom';
-import Topbar from './entidad/dashboard/global/Topbar';
-import Dashboar from './entidad/dashboard';
-import Sidebar from './entidad/dashboard/global/Sidebar';
+import Topbar from './entidad/home/global/Topbar';
+import Dashboar from './entidad/home';
+import Sidebar from './entidad/home/global/Sidebar';
 import Rol from "./entidad/rol";
 import Crearrol from "./entidad/rol/create";
 import Telefono from './entidad/telefono';
-import Cliente from "./entidad/client";
+import Cliente from "./entidad/cliente";
 import Categoria from "./entidad/categoria";
-import Maps from "./components/clientemaps";
 import Appss from "./components/ejemplo/basic";
 
 function App() {
