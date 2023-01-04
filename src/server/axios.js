@@ -55,9 +55,9 @@ export default class Axios {
     });
     return elim;
   }
-  UpdatePut(url, data) {
+  UpdatePut(url, data, id) {
     const put = axios({
-      url: url,
+      url: url+`/${id}`,
       method: "PUT",
       data: data,
     });

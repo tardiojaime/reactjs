@@ -1,22 +1,22 @@
-import { Typography, Box, useTheme } from "@mui/material";
-import { tokens } from "../theme";
+import { Typography, Box } from "@mui/material";
 
-const Header = ({ title, subtitle }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+const Header = ({ title, subtitle, center }) => {
   return (
     <Box mb="30px">
       <Typography
         variant="h2"
-        color={colors.grey[100]}
-        fontWeight="bold"
-        sx={{ m: "0 0 5px 0" }}
+        color='black'
+        fontWeight="bold"        
+        sx={{ m: "0 0 5px 0", textAlign: `${center}`}}
       >
         {title}
       </Typography>
-      <Typography variant="h5" color={colors.greenAccent[400]}>
+      {
+      !subtitle ? null :
+      <Typography variant="h5" color='green'>
         {subtitle}
       </Typography>
+      }
     </Box>
   );
 };

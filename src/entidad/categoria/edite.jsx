@@ -1,41 +1,61 @@
 import { Box, TextField, Button, Fab } from "@mui/material";
 import Header from "../../components/Header";
 import SendIcon from "@mui/icons-material/Send";
-import ArrowBackSharpIcon from '@mui/icons-material/ArrowBackSharp';
-import React, { useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
 import Axios from "../../server/axios";
+import ArrowBackSharpIcon from '@mui/icons-material/ArrowBackSharp';
 import Alerts from "../../components/alert/alert";
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+
 const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Ijc1MzQ1MTYiLCJlbWFpbCI6InRhcmRpbzcxN0BnbWFpbC5jb20iLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNjcyNjg2NjA5LCJleHAiOjE2NzI3MTU0MDl9.MRy3cg4qqJxdQzlwHaWol750lq0WoGFhEKiqMaDasxU';
 const sql = new Axios(token);
 const url = process.env.REACT_APP_CATEGORIA;
-
-function CreateCategory() {
+function EditCategory(){
   const [nueva, setCategoria] = useState({
-    categoria: '',
+    categoria: 'hjghj',
     peso: 0
   });
+  const Apeso = (e) => {
+    console.log('jksdjgfalksdjl');
+  }
+  //const {register, handleSubmit} = useForm();
+  
   const [alerta, setAlerta] = useState(false);
   const alertupdate = ()=> setAlerta(false);
-  //const navegacion = useNavigate();
+
+  const navegacion = useNavigate();
+
   const onsubmit = async (e) => {
-    e.preventDefault();
+    console.log(e);
+/*     e.preventDefault();
     const res = await sql.toRegister(url, nueva);
     try {
       //res.status === 201 ? navegacion('/categoria') : console.log('se produjo un error...');      
-      res.status === 201 ?  setAlerta(true): console.log('se produjo un error...');
+      res.status !== 200 ?  setAlerta(true): navegacion('/categoria');
     } catch (error) {
       console.log(error);
-    }
+    } */
   };
-  const Acategoria = (e) => {
-    setCategoria({categoria:e.target.value, peso:nueva.peso});
+  
+  const {id} = useParams();
+  const mostrar = async()=>{
+    try {
+      const result = await sql.AllOne(id, url);
+      if(result.status ===200){
+        result.data.id ? setCategoria(result.data): setAlerta(true);
+      }
+    } catch (error) {
+      
+    }
   }
-  const Apeso = (e) => {
-    setCategoria({categoria:nueva.categoria, peso: parseInt(e.target.value)});    
-  }
+  
   return (
     <Box
+    component='form'
+    noValidate
+      autoComplete="off"
       sx={{
         borderRadius: "20px",
         //backgroundColor: "#cce9f1",
@@ -46,27 +66,30 @@ function CreateCategory() {
       }}
     >
       {
-        alerta && <Alerts tipo='success' cambiar={alertupdate} />
+        alerta && <Alerts tipo='error' cambiar={alertupdate} />
       }
       <div>
         <Header title="Agregar nueva Categoria" center='center' />
-        <form onSubmit={onsubmit}>
+        <form >
           <div>
+            {nueva.categoria}
             <TextField
               id="id_categoria"
               label="Nombre"              
               type="text"
               size="small"
               required
-              onChange={Acategoria}
+              defaultValue={nueva.categoria}        
+              //{...register('categoria')}
             />
             <TextField
               id="id_peso"
               label="Peso"
               type="number"
-              size="small"
-              onChange={Apeso}
+              size="small"          
               required
+              defaultValue={'1'} 
+              //{...register('pesso')}
             />
           </div>
           <Box
@@ -95,4 +118,4 @@ function CreateCategory() {
     </Box>
   );
 };
-export default CreateCategory;
+export default EditCategory;

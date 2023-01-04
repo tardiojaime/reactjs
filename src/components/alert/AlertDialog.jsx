@@ -19,13 +19,13 @@ export default function AlertDialog({alert, cancel, deleteInfo, dato}) {
         open={alert}
         TransitionComponent={Transition}
         keepMounted
+        aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+        <DialogTitle sx={{pr: 15}}>{dato.id ? 'Eliminar el registro: '+dato.id: 'Aliminar registro...'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
+            {dato.nombre ? 'Nombre del registro: '+dato.nombre: 'Desea eliminar el registro...'}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

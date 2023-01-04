@@ -9,27 +9,25 @@ import Axios from "../../server/axios";
 import Actions from "../../components/actions/Actions";
 import AlertDialog from "../../components/alert/AlertDialog";
 import Alerts from "../../components/alert/alert";
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Ijc1MzQ1MTYiLCJlbWFpbCI6InRhcmRpbzcxN0BnbWFpbC5jb20iLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNjcyNjg2NjA5LCJleHAiOjE2NzI3MTU0MDl9.MRy3cg4qqJxdQzlwHaWol750lq0WoGFhEKiqMaDasxU';
+import { Link } from "react-router-dom";
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Ijc1MzQ1MTYiLCJlbWFpbCI6InRhcmRpbzcxN0BnbWFpbC5jb20iLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNjcyNzU1MjU2LCJleHAiOjE2NzI3ODQwNTZ9.vkte7CTxmWqrYldgYs9z_4a5Kfi-0yh_EV3uqaSVkNE';
 const sql = new Axios(token);
 const url = process.env.REACT_APP_CATEGORIA;
 const Categoria = () => {
   const [categoria, setcategoria] = useState([]);
   const [errorCarga, setErrorCar] = useState(false);
   const [alert, setAlert] = useState(false);
-  const [page, setPage] = useState(5);
+  const [page, setPage] = useState(7);
   const [dato, setDato] = useState({
     id: 1,
     categoria: 'no encontrado'
   });
-  const [onedit, setOnedit] = useState(false);
   /* funciones para el componente de acciones */
-  const edit = (data) => {
-    console.log(data);
-    //console.log(JSON.stringify(data.row));
-  }
+
+  const cambiar = () => setErrorCar(false);
   const deleted = (data) => {
     setAlert(true);
-    setDato(data.row);
+    setDato({id:data.row.id, nombre:data.row.categoria});
   }
   /* funciones para el componente de dialogo de alerta */
   const cancel = () => alert ? setAlert(false) : null;
@@ -46,23 +44,25 @@ const Categoria = () => {
       }
     }
   }
-
   /* funciones relacionados con la tablas */
 
   /* Reacciones a problemas de carga */
-  const cerrar = () => {
-    setErrorCar(false)
-  };
 
-  const cargar = async () => {
-    const datos = await sql.All(url);
-    if (datos.status === 200) {
-      setcategoria(datos.data);
-    } else {
-      setErrorCar(true);
-    }
-  }
+
   useEffect(() => {    
+    const cargar = async () => {
+      const datos = await sql.All(url);
+      if(datos.status){
+        if (datos.status === 200) {
+          setcategoria(datos.data);
+        } else {
+          setErrorCar(true);
+        }
+      }
+      else{
+        setErrorCar(true);
+      }
+    }
     cargar();
   }, []);
   const columnas = useMemo(() => [
@@ -98,12 +98,13 @@ const Categoria = () => {
       headerName: "Acciones",
       align: "right",
       width: 200,
-      renderCell: (param) => <Actions {...{ param, edit, deleted }} />
+      renderCell: (param) => <Actions {...{ param, deleted }} />
     },
   ], []);
+
   return (
     <Box m="20px">
-      <Alerts {...{ errorCarga, cerrar }} />
+      {errorCarga && <Alerts tipo='error' cambiar={cambiar}/>}      
       <Box
         sx={{
           display: 'flex',
@@ -111,9 +112,8 @@ const Categoria = () => {
         }}
       >
         <Header title="Categorias" subtitle="Registros de todos los Categorias" />
-        <Fab href="/rol/nuevo" color='primary' size="medium" aria-label="add">
-          <AddIcon />
-        </Fab>
+        
+          <Link to='/categoria/create'><Fab color="primary" size="medium" aria-label="add"><AddIcon /></Fab></Link>            
       </Box>
       <Box
         height="75vh"
@@ -127,10 +127,10 @@ const Categoria = () => {
           rows={categoria}
           columns={columnas}
           components={{ Toolbar: GridToolbar }}
-          rowsPerPageOptions={[5, 10, 20]}
+          rowsPerPageOptions={[5, 7, 20]}
           pageSize={page}
           pagination
-          onPageSizeChange={(newpagesize) => edit(newpagesize)}
+          //onPageSizeChange={(newpagesize) => edit(newpagesize)}
         />
       </Box>
       <AlertDialog {...{ alert, cancel, deleteInfo, dato }} />

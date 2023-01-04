@@ -11,6 +11,8 @@ import Telefono from './entidad/telefono';
 import Cliente from "./entidad/cliente";
 import Categoria from "./entidad/categoria";
 import Appss from "./components/ejemplo/basic";
+import CreateCategory from "./entidad/categoria/create";
+import EditCategory from "./entidad/categoria/update";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -26,11 +28,18 @@ function App() {
           <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
               <Route path='/' element={<Dashboar/>} />
+              {/* rutas para rol */}
               <Route path='/rol' element={<Rol/>} />
-              <Route path='/rol/nuevo' element={<Crearrol/>} />
+              <Route path='create' element={<Crearrol/>} />
+                {/* <Route path='/rol/edit/:id' element={<EditCategory/>}/> */}
               <Route path='/telefono' element={<Telefono />} />
               <Route path='/cliente' element={<Cliente/>} />
+              {/* rutas para cetegoria */}
               <Route path='/categoria' element={<Categoria/>} />
+              <Route path='/categoria/create' element={<CreateCategory/>} />            
+              <Route path='/categoria/edit/:id' element={<EditCategory/>} />
+
+              <Route path='/creates' element={<CreateCategory/>} />
               <Route path='/mapa' element= {<Appss/>} />
             </Routes>
           </main>
