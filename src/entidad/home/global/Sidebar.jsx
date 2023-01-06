@@ -130,6 +130,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+              <Item
+                title="Categoria"
+                to="/categoria"
+                icon={<PeopleOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
             <Item
               title="Telefonos"
               to="/telefono"
@@ -140,13 +147,6 @@ const Sidebar = () => {
             <Item
               title="Clientes"
               to="/cliente"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Categoria"
-              to="/categoria"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

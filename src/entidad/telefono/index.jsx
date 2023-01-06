@@ -1,26 +1,74 @@
-import { Box, useTheme } from "@mui/material";
-import React, { useMemo, useState } from "react";
-import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import { Box } from "@mui/material";
+import React, { useMemo, useState, useEffect } from "react";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Header from "../../components/Header";
-import { useEffect } from "react";
-import { todos } from "./service";
+import Axios from "../../server/axios";
+import Actions from "../../components/actions/Actions";
+import AlertDialog from "../../components/alert/AlertDialog";
+import Alerts from "../../components/alert/alert";
+
+import { Link } from "react-router-dom";
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Ijc1MzQ1MTYiLCJlbWFpbCI6InRhcmRpbzcxN0BnbWFpbC5jb20iLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNjcyNzU1MjU2LCJleHAiOjE2NzI3ODQwNTZ9.vkte7CTxmWqrYldgYs9z_4a5Kfi-0yh_EV3uqaSVkNE';
+const sql = new Axios(token);
+const url = process.env.REACT_APP_TELEFONO;
+
 const Telefono = () => {
-  const [movil, setmovil] = useState([]);
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  useEffect(() => {
-    const cargar = async () =>{ 
-      const datos = await todos();
-      setmovil(datos.data);
+  const [phone, setPhone] = useState([]);
+  const [errorCarga, setErrorCar] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const [page, setPage] = useState(7);
+  const [dato, setDato] = useState({
+    id: 1,
+    Marca: 'no encontrado'
+  });
+
+  /* funciones para el componente de acciones */
+
+  const cambiar = () => setErrorCar(false);
+  const deleted = (data) => {
+    setAlert(true);
+    setDato({id:data.row.id, nombre:data.row.modelo + ' '+data.row.marca});
+  }
+  /* funciones para el componente de dialogo de alerta */
+  const cancel = () => alert ? setAlert(false) : null;
+  const deleteInfo = async (id) => {
+    if (id) {
+      console.log(id);
+      const resul = await sql.Delete(url, id)
+      if (resul.status === 200) {
+        setPhone((prevRows)=>prevRows.filter((row)=>row.id !== id));
+        setAlert(false);
+      }
+      else{
+        setErrorCar(true);
+      }
+    }
+  }
+
+  useEffect(() => {    
+    const cargar = async () => {
+      const datos = await sql.All(url);
+      if(datos.status){
+        if (datos.status === 200) {
+          setPhone(datos.data);
+        } else {
+          setErrorCar(true);
+        }
+      }
+      else{
+        setErrorCar(true);
+      }
     }
     cargar();
   }, []);
   const columnas = useMemo(() => [
+    {
+      field: "id",
+      headerName: "ID",
+      type: "number",
+    },
     {
       field: "modelo",
       headerName: "Modelo",
@@ -46,12 +94,6 @@ const Telefono = () => {
       align: 'center',
     },
     {
-      field: 'estado',
-      headerName: 'Estado',
-      align:'center',
-      type: 'boolean',
-    },
-    {
       field: "createAt",
       headerName: "CreatAt",
       headerAlign: "center",
@@ -65,25 +107,13 @@ const Telefono = () => {
       type: "actions",
       headerName: "Acciones",
       align: "right",
-      getActions: (param) => [
-        <GridActionsCellItem
-          icon={<DeleteIcon color="error" />}
-          label="Delete"
-          color="info"
-          size="large"
-          //onClick={deleteUser(params.id)}
-        />,
-        <GridActionsCellItem
-          icon={<EditIcon color="success" />}
-          label="Editar"
-          color="info"
-          size="large"
-        />,
-      ],
+      width: 200,
+      renderCell: param => <Actions {...{param, deleted}}/>
     },
-  ]);
+  ], []);
   return (
     <Box m="20px">
+      {errorCarga && <Alerts tipo='error'  cambiar={cambiar}/>}
       <Box 
       sx={{
         display: 'flex', 
@@ -91,9 +121,7 @@ const Telefono = () => {
       }}
       >
       <Header title="Telefonos" subtitle="Registros de todos los telefonos" />
-      <Fab href="/rol/nuevo"  aria-label="add">
-        <AddIcon />
-      </Fab>
+      <Link to='/telefono/create'><Fab color="primary" size="medium" aria-label="add"><AddIcon /></Fab></Link>
       </Box>
       <Box
         height="75vh"
@@ -104,12 +132,15 @@ const Telefono = () => {
         }}
       >
         <DataGrid
-          rows={movil}
+          rows={phone}
           columns={columnas}
           components={{ Toolbar: GridToolbar }}
-          pageSize={5}
+          rowsPerPageOptions={[5, 7, 20]}
+          pageSize={page}
+          pagination
         />
       </Box>
+      <AlertDialog {...{alert, cancel, deleteInfo, dato}} />
     </Box>
   );
 };

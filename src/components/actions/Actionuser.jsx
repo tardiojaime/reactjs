@@ -4,14 +4,14 @@ import Fab from "@mui/material/Fab";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Link } from "react-router-dom";
-export default function Actions({ param, deleted }) {
+export default function ActionU({ param, deleted }) {
   const eliminar = () => {
     deleted(param);
   };
 
   return (
     <Box sx={{ "& > :not(style)": { m: 1 } }}>
-      <Link to={`edit/${param.id}`}>
+      <Link to={`edit/${param.row.ci}`}>
         <Fab color="secondary" aria-label="edit" size="small">
           <EditIcon />
         </Fab>

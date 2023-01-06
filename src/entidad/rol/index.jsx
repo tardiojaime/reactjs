@@ -1,4 +1,4 @@
-import { Box, useTheme, Link } from "@mui/material";
+import { Box } from "@mui/material";
 import React, { useMemo, useState } from "react";
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -8,19 +8,73 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Header from "../../components/Header";
 import { useEffect } from "react";
+import Axios from "../../server/axios";
+import Actions from "../../components/actions/Actions";
+import Alerts from "../../components/alert/alert";
+import { Link } from "react-router-dom";
+import AlertDialog from "../../components/alert/AlertDialog";
 
+
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Ijc1MzQ1MTYiLCJlbWFpbCI6InRhcmRpbzcxN0BnbWFpbC5jb20iLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNjcyNzU1MjU2LCJleHAiOjE2NzI3ODQwNTZ9.vkte7CTxmWqrYldgYs9z_4a5Kfi-0yh_EV3uqaSVkNE';
+const sql = new Axios(token);
+const url = process.env.REACT_APP_ROL;
 const Rol = () => {
+  /* datos para cargar  */
   const [rols, setrols] = useState([]);
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  useEffect(() => {
-    fetch("http://127.0.0.1:4000/rol")
-      .then((res) => res.json())
-      .then((result) => {
-        setrols(result);
-      });
-  }, []);
-  const columnas = React.useMemo(() => [
+  /* complemento existencia de errores */
+  const [errorCarga, setErrorCar] = useState(false);
+  /* complementeo de confirmacion de eliminacion */
+  const [alert, setAlert] = useState(false);
+  /* complemento para la tabla */
+  const [page, setPage] = useState(7);
+  /* Complemento para eliminar */
+  const [dato, setDato] = useState({
+    id: 1,
+    nombre: 'no encontrado'
+  });
+  const cambiar = () => setErrorCar(false);
+  const deleted = (data) => {
+    setAlert(true);
+    setDato({id:data.row.id, nombre:data.row.nombre});
+  }
+    /* funciones para el componente de dialogo de alerta */
+    const cancel = () => alert ? setAlert(false) : null;
+    const deleteInfo = async (id) => {
+      if (id) {
+        console.log(id);
+        const resul = await sql.Delete(url, id)
+        if (resul.status === 200) {
+          setrols((prevRows)=>prevRows.filter((row)=>row.id !== id));
+          setAlert(false);
+        }
+        else{
+          setErrorCar(true);
+        }
+      }
+    }
+  
+    useEffect(() => {    
+      const cargar = async () => {
+        const datos = await sql.All(url);
+        if(datos.status){
+          if (datos.status === 200) {
+            setrols(datos.data);
+          } else {
+            setErrorCar(true);
+          }
+        }
+        else{
+          setErrorCar(true);
+        }
+      }
+      cargar();
+    }, []);
+  const columnas = useMemo(() => [
+    {
+      field: "id",
+      headerName: "ID",
+      type: "number",
+    },
     {
       field: "nombre",
       headerName: "Nombre",
@@ -47,25 +101,13 @@ const Rol = () => {
       type: "actions",
       headerName: "Acciones",
       align: "right",
-      getActions: (param) => [
-        <GridActionsCellItem
-          icon={<DeleteIcon color="error" />}
-          label="Delete"
-          color="info"
-          size="large"
-          //onClick={deleteUser(params.id)}
-        />,
-        <GridActionsCellItem
-          icon={<EditIcon color="success" />}
-          label="Editar"
-          color="info"
-          size="large"
-        />,
-      ],
+      width: 200,
+      renderCell: (param) => <Actions {...{param, deleted }} />,
     },
-  ]);
+  ], []);
   return (
     <Box m="20px">
+      {errorCarga && <Alerts tipo='error'  cambiar={cambiar}/>}
       <Box 
       sx={{
         display: 'flex', 
@@ -73,13 +115,7 @@ const Rol = () => {
       }}
       >
       <Header title="Roles" subtitle="Registros de todos los roles" />
-      <Fab href="/rol/nuevo" sx={{
-        color: colors.greenAccent[500],
-        size: 'medium'
-      }} aria-label="add">
-
-        <AddIcon />
-      </Fab>
+      <Link to='/rol/create'><Fab color="primary" size="medium" aria-label="add"><AddIcon /></Fab></Link>            
       </Box>
       <Box
         height="75vh"
@@ -116,8 +152,12 @@ const Rol = () => {
           rows={rols}
           columns={columnas}
           components={{ Toolbar: GridToolbar }}
+          rowsPerPageOptions={[5, 7, 20]}
+          pageSize={page}
+          pagination
         />
       </Box>
+      <AlertDialog {...{alert, cancel, deleteInfo, dato}} />
     </Box>
   );
 };

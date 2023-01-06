@@ -10,7 +10,7 @@ import Actions from "../../components/actions/Actions";
 import AlertDialog from "../../components/alert/AlertDialog";
 import Alerts from "../../components/alert/alert";
 import { Link } from "react-router-dom";
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Ijc1MzQ1MTYiLCJlbWFpbCI6InRhcmRpbzcxN0BnbWFpbC5jb20iLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNjcyNzU1MjU2LCJleHAiOjE2NzI3ODQwNTZ9.vkte7CTxmWqrYldgYs9z_4a5Kfi-0yh_EV3uqaSVkNE';
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Ijc1MzQ1MSIsImVtYWlsIjoidGFyZGlvNzE3QGdtYWlsLmNvbSIsInJvbCI6IkNsaWVudGUiLCJpYXQiOjE2NzI4NzgwMDEsImV4cCI6MTY3Mjg3ODEwMX0.4UPB7Etmr0wblbeTreeZFKxF5aNAAjax5YIqov-mZmc';
 const sql = new Axios(token);
 const url = process.env.REACT_APP_CATEGORIA;
 const Categoria = () => {
@@ -44,10 +44,6 @@ const Categoria = () => {
       }
     }
   }
-  /* funciones relacionados con la tablas */
-
-  /* Reacciones a problemas de carga */
-
 
   useEffect(() => {    
     const cargar = async () => {
