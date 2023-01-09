@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { useState } from "react";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
@@ -19,9 +19,20 @@ import EditPhone from "./entidad/telefono/update";
 import CreateClient from "./entidad/cliente/create";
 import EditClient from "./entidad/cliente/update";
 import SelectMaps from "./entidad/cliente/createmaps";
-import Ubicacion from "./components/maps/ubicacion";
-import { GoogleContext, GoogleProvider } from "./provider/googlemaps";
+import { GoogleProvider } from "./provider/googlemaps";
 import UbicacionCliente from "./entidad/cliente/maps";
+import Vehiculo from "./entidad/Vehiculo";
+import CreateVehiculo from "./entidad/Vehiculo/create";
+import EditVehiculo from "./entidad/Vehiculo/update";
+import Almacen from "./entidad/almacen";
+import Conductor from "./entidad/conductor";
+import CreateConductor from "./entidad/conductor/create";
+import EditConductor from "./entidad/conductor/update";
+import Proveedor from "./entidad/proveedor";
+import CreateProveedor from "./entidad/proveedor/create";
+import EditProveedor from "./entidad/proveedor/update";
+import Pedido from "./entidad/pedido";
+import AsingarP from "./entidad/pedido/update";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -37,6 +48,8 @@ function App() {
               <Topbar setIsSidebar={setIsSidebar} />
               <Routes>
                 <Route path="/" element={<Dashboar />} />
+                {/* ruta almacen */}
+                <Route path="/almacen" element={<Almacen />} />
                 {/* rutas para rol */}
                 <Route path="/rol" element={<Rol />} />
                 <Route path="/rol/create" element={<Crearrol />} />
@@ -55,6 +68,24 @@ function App() {
                 <Route path="/categoria" element={<Categoria />} />
                 <Route path="/categoria/create" element={<CreateCategory />} />
                 <Route path="/categoria/edit/:id" element={<EditCategory />} />
+                {/* Rutas para movilidades */}
+                <Route path="/vehiculo" element={<Vehiculo />} />
+                <Route path="/vehiculo/create" element={<CreateVehiculo />} />
+                <Route path="/vehiculo/edit/:id" element={<EditVehiculo />} />
+                {/* rutas para conductores o personal de entrega */}
+                <Route path="/conductor" element={<Conductor />} />
+                <Route path="/conductor/create" element={<CreateConductor />} />
+                <Route path="/conductor/edit/:id" element={<EditConductor />} />
+                {/* rutas para proveedores */}
+                <Route path="/proveedor" element={<Proveedor />} />
+                <Route path="/proveedor/create" element={<CreateProveedor />} />
+                <Route path="/proveedor/edit/:id" element={<EditProveedor />} />
+                {/* rutas para ususario */}
+
+                {/* rata par pedido */}
+                <Route path="/pedido" element={<Pedido />} />
+                {/* tarea */}
+                <Route path="pedido/asignar/:id" element={<AsingarP />} />
 
                 <Route path="/creates" element={<CreateCategory />} />
                 <Route path="/mapa" element={<Appss />} />

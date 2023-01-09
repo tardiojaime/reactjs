@@ -7,6 +7,13 @@ import "react-pro-sidebar/dist/css/styles.css";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import WarehouseIcon from "@mui/icons-material/Warehouse";
+import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import CategoryIcon from "@mui/icons-material/Category";
+import PhonelinkSetupIcon from "@mui/icons-material/PhonelinkSetup";
+import GradingIcon from "@mui/icons-material/Grading";
+import ArticleIcon from "@mui/icons-material/Article";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -124,23 +131,30 @@ const Sidebar = () => {
               Data
             </Typography> */}
             <Item
+              title="Almacen"
+              to="/almacen"
+              icon={<WarehouseIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
               title="Roles"
               to="/rol"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-              <Item
-                title="Categoria"
-                to="/categoria"
-                icon={<PeopleOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
+            <Item
+              title="Categoria"
+              to="/categoria"
+              icon={<CategoryIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <Item
               title="Telefonos"
               to="/telefono"
-              icon={<PeopleOutlinedIcon />}
+              icon={<PhonelinkSetupIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -152,9 +166,37 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
+              title="Vehiculos"
+              to="/vehiculo"
+              icon={<AirportShuttleIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
               title="Conductores"
-              to="/conductores"
+              to="/conductor"
               icon={<PeopleOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Proveedores"
+              to="/proveedor"
+              icon={<ContactsIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Pedidos"
+              to="/pedido"
+              icon={<GradingIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+{/*             <Item
+              title="Productos"
+              to="/pedido"
+              icon={<ArticleIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -164,7 +206,7 @@ const Sidebar = () => {
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
           </Box>
         </Menu>
       </ProSidebar>

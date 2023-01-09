@@ -1,13 +1,9 @@
 import { Avatar, Box, IconButton, useTheme} from '@mui/material';
 import { useContext } from 'react';
 import { ColorModeContext, tokens } from '../../../theme';
-import FolderIcon from '@mui/icons-material/Folder'
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import { pink } from '@mui/material/colors';
+import { blue, pink } from '@mui/material/colors';
 
 const Topbar = () => {
   const theme = useTheme();
@@ -22,26 +18,13 @@ const Topbar = () => {
         backgroundColor={colors.primary[400]}
         borderRadius="3px"
       >
-        <Avatar sx={{bgcolor: pink[500]}}>
-          <FolderIcon/>
+        <Avatar sx={{bgcolor: blue[500]}}>
+          <HomeOutlinedIcon/>
         </Avatar>
       </Box>
 
       {/* ICONS */}
       <Box display="flex">
-{/*         <IconButton onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode === "dark" ? (
-            <DarkModeOutlinedIcon />
-          ) : (
-            <LightModeOutlinedIcon />
-          )}
-        </IconButton> */}
-{/*         <IconButton>
-          <NotificationsOutlinedIcon />
-        </IconButton>
-        <IconButton>
-          <SettingsOutlinedIcon />
-        </IconButton> */}
         <IconButton>
           <PersonOutlinedIcon />
         </IconButton>
